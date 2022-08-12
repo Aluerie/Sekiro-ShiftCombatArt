@@ -37,6 +37,8 @@ DWORD WINAPI Begin(LPVOID lpParam) {
 
 	};
 
+
+
 	for (int i = 0; i < 6; i++) {
 
 		mProcs[i] = (UINT_PTR)GetProcAddress(mHinstDLL, mImportNames[i]);
@@ -82,7 +84,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 
 		DisableThreadLibraryCalls(hinstDLL);
 
-		//LoadLibraryA("SekiroOnline.dll");
+		LoadLibraryA("SekiroOnline.dll");
 
 
 		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)Begin, NULL, NULL, NULL);

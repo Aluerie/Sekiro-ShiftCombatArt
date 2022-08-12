@@ -639,7 +639,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		currentState = *(WORD*)(gamePad0Ptr + 0x240);
 
 		if ((currentState & XINPUT_GAMEPAD_X) != 0) { //delete this condition entirely later. just for memez.
-			doBullet();
+			//doBullet();
 		}
 
 		if ((currentState & XINPUT_GAMEPAD_X) != 0 && (currentState & XINPUT_GAMEPAD_X) != (lastState & XINPUT_GAMEPAD_X)) {

@@ -79,20 +79,8 @@
     <MASM Include="dinput8_asm.asm">
       <Filter>Source Files</Filter>
     </MASM>
-    <MASM Include="ValidateItem.asm">
-      <Filter>Source Files\_asm</Filter>
-    </MASM>
-    <MASM Include="DeleteItem.asm">
-      <Filter>Source Files\_asm</Filter>
-    </MASM>
     <MASM Include="ItemName.asm">
       <Filter>Source Files\_asm</Filter>
-    </MASM>
-    <MASM Include="DarkSFix.asm">
-      <Filter>Source Files\_asm</Filter>
-    </MASM>
-    <MASM Include="test.asm">
-      <Filter>Source Files\code</Filter>
     </MASM>
   </ItemGroup>
   <ItemGroup>
