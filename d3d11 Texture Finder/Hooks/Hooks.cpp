@@ -15,7 +15,7 @@ namespace Hooks {
 
 		if (wantTimeSlow && popupOpen)
 		{
-			*(float*)(FD4Time + 0x8) = 0.0047; //normal time step is 1/60.
+			*(float*)(FD4Time + 0x8) = 0.0047f; //normal time step is 1/60.
 
 		}
 
@@ -32,6 +32,25 @@ namespace Hooks {
 	__int64 forceNonDuplicate(unsigned int a1) {
 
 		return 0x9FFFFFFF;
+	}
+
+	/// <summary>
+	/// 0x3/0x4 is left stick.
+	/// 0x6/0x7 is right stick.
+	/// 0xB/0xC is triggers
+	/// 0x1/0x2 is ?
+	/// </summary>
+	typedef double (__fastcall* __analogGetter)(__int64 PadDevicePtr, int index);
+	__analogGetter getAnalog = (__analogGetter)(0x141A8CBC0);
+	__analogGetter getanalogOriginal = NULL;
+	double hookAnalogInputs(__int64 PadDevicePtr, int index) {
+		if (popupOpen && (index == 0x6 || index == 0x7)) {
+			return 0;
+		}
+		else
+		{
+			return getanalogOriginal(PadDevicePtr, index);
+		}
 	}
 
 
@@ -90,7 +109,7 @@ namespace Hooks {
 		
 		ImGuiIO& io = ImGui::GetIO();
 
-		if (io.WantCaptureMouse) {
+		if (io.WantCaptureMouse && !usingGamepad2) {
 			if (popupOpen)
 			{
 				firstFree = true;
@@ -149,7 +168,7 @@ namespace Hooks {
 			*(float*)(c + 0x258) = 0;
 			*(float*)(c + 0x25C) = 0;
 
-			return true;
+			return GamePadInputParserOriginal(PadDevicePtr);
 
 		}
 		return GamePadInputParserOriginal(PadDevicePtr);
@@ -182,6 +201,9 @@ namespace Hooks {
 	void createHooks() {
 		MH_CreateHook((LPVOID)menCheck, (LPVOID)&setInputCapture, reinterpret_cast<LPVOID*>(&menCheckOriginal));
 		MH_EnableHook((LPVOID)menCheck);
+
+		MH_CreateHook((LPVOID)getAnalog, (LPVOID)&hookAnalogInputs, reinterpret_cast<LPVOID*>(&getanalogOriginal));
+		MH_EnableHook((LPVOID)getAnalog);
 
 		MH_CreateHook((LPVOID)timeStepSetter, (LPVOID)&setTimeStep, reinterpret_cast<LPVOID*>(&timeStepSetterOriginal));
 		MH_EnableHook((LPVOID)timeStepSetter);

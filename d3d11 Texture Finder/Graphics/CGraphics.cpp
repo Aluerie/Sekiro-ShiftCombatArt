@@ -1,13 +1,15 @@
 ﻿#pragma once
 #include "CGraphics.h"
 #include "PieMenu.h"
-#include <string>
+#include "ImGuiTheme.h"
 #include "../Hooks/Hooks.h"
 #include "../Functions/Functions.h"
+#include <string>
 #include <thread>
 #include <future>
 #include <algorithm>
 #include <fstream>
+
 bool graphicsInit() {
 	bool init_hook = false;
 	do
@@ -27,8 +29,15 @@ bool graphicsInit() {
 
 	return 0;
 }
+
+clock_t start = 0;
+float alpha = 0;
+int alphaIndex = 0;
+bool usingGamepad2;
+bool analogueTriggerState = 0;
 bool wantTimeSlow;
 bool wantHotKeys;
+bool triggerSetting;
 int operatingMode;
 #define SLOT_COUNT_MIN 6
 #define SLOT_COUNT_MAX 10
@@ -44,6 +53,8 @@ bool wheelChecked = false;
 bool fileTimeSlow = false;
 bool fileHotKeys = false;
 int fileOperatingMode = 0;
+uint64_t inputAddr = 0;
+
 HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags)
 {
 	if (!imguiInit)
@@ -66,19 +77,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			ImGui_ImplWin32_Init(window);
 			ImGui_ImplDX11_Init(pDevice, pContext);
 
-
+			embraceTheDarkness();
 
 			structInitializer();
-
-			for (auto it = imageMap.begin(); it != imageMap.end(); ++it)
-			{
-				std::string strRealID = std::to_string(it->first);
-				std::string path = "WeaponWheelResources/" + strRealID + ".png";
-				bool ret = LoadTextureFromFile(path.c_str(), &it->second, &my_image_width, &my_image_height);
-				//printf("%llx\n", &(currentArt->texture));
-				IM_ASSERT(ret);
-
-			}
+			structInitializer();
 
 
 
@@ -100,7 +102,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				int fileRealID = stoi(content);
 				if (fileRealID > 0 && fileRealID < 100000)
 				{
-					fileItems.emplace_back("", fileRealID);
+					fileItems.emplace_back("", fileRealID, ImageInfoStruct());
 				}
 			}
 			in.close();
@@ -115,7 +117,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			{
 				for (size_t i = 0; i < SLOT_COUNT_MIN; i++)
 				{
-					wheelItems.emplace_back("", 5000);
+					wheelItems.emplace_back("", 5000, ImageInfoStruct());
 				}
 			}
 			else {
@@ -140,7 +142,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	float reference_res = 900;
 	float reference_scale = 0.5;
 	float desired_scale = io.DisplaySize.y / (reference_res / reference_scale);
-	font->Scale = desired_scale;
+	if (desired_scale)
+	{
+		font->Scale = desired_scale;
+
+	}
 
 	//ImGui::ShowDemoWindow();
 	//do stuff
@@ -149,29 +155,116 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus;
 		ImGui::Begin("Mod Debug", NULL, flags);
 		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
-		ImGui::Text("Weapon Wheel Controls: Dpad-Down + Right Joystick, or Tab + Mouse. This message will disappear once you're loaded in.");
+		ImGui::Text("Weapon Wheel Controls: Dpad-Down + Right Joystick, or Tab + Mouse. This message will disappear once you're loaded in (if not, update to Sekiro v1.06)");
 		ImGui::End();
 		wheelChecked = false;
 
 	}
-
-
 
 	if (loadedIn())
 	{
 
 		if (!wheelChecked)
 		{
+			wheelChecked = true;
 			for (size_t i = 0; i < wheelItems.size(); i++)
 			{
 				if (!validateItem(wheelItems[i].realID)) {
 					wheelItems[i].realID = 5000;
 				}
 			}
-			wheelChecked = true;
+			for (auto it = imageInfos.begin(); it != imageInfos.end(); ++it)
+			{
+				it->SetImagePtr();
+				if (it->imageptr == 0)
+				{
+					wheelChecked = false;
+				}
+			}
+			for (size_t i = 0; i < wheelItems.size(); i++)
+			{
+				wheelItems[i].image = *getImageFromRealID(wheelItems[i].realID);
+				 
+			}
+			
 		}
 
+#if 0
+		ImGui::Begin("Mod Debug", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::InputScalar("Resource Address", ImGuiDataType_U64, &inputAddr, NULL, NULL, "%llx", ImGuiInputTextFlags_CharsHexadecimal);
 
+		uint64_t ptr = *(uint64_t*)(0x143D98F10);
+		ptr = *(uint64_t*)(ptr + 0x58);
+		ptr = *(uint64_t*)(ptr + 0xC30);
+		ptr = *(uint64_t*)(ptr + 0x80);
+
+
+
+
+		uint64_t sb_icon_RV = *(uint64_t*)(ptr + 0x138);
+		sb_icon_RV = *(uint64_t*)(sb_icon_RV + 0x68);
+		sb_icon_RV = *(uint64_t*)(sb_icon_RV + 0x10);
+		sb_icon_RV = *(uint64_t*)(sb_icon_RV + 0x48);
+		sb_icon_RV = *(uint64_t*)(sb_icon_RV + 0x10);
+
+		uint64_t sb_boss_RV = *(uint64_t*)(ptr + 0x108);
+		sb_boss_RV = *(uint64_t*)(sb_boss_RV + 0x68);
+		sb_boss_RV = *(uint64_t*)(sb_boss_RV + 0x10);
+		sb_boss_RV = *(uint64_t*)(sb_boss_RV + 0x48);
+		sb_boss_RV = *(uint64_t*)(sb_boss_RV + 0x10);
+
+		uint64_t sb_icon2_RV = *(uint64_t*)(ptr + 0x140);
+		sb_icon2_RV = *(uint64_t*)(sb_icon2_RV + 0x68);
+		sb_icon2_RV = *(uint64_t*)(sb_icon2_RV + 0x10);
+		sb_icon2_RV = *(uint64_t*)(sb_icon2_RV + 0x48);
+		sb_icon2_RV = *(uint64_t*)(sb_icon2_RV + 0x10);
+
+		uint64_t sb_icon3_RV = *(uint64_t*)(ptr + 0x148);
+		sb_icon3_RV = *(uint64_t*)(sb_icon3_RV + 0x68);
+		sb_icon3_RV = *(uint64_t*)(sb_icon3_RV + 0x10);
+		sb_icon3_RV = *(uint64_t*)(sb_icon3_RV + 0x48);
+		sb_icon3_RV = *(uint64_t*)(sb_icon3_RV + 0x10);
+
+		uint64_t sb_icon4_RV = *(uint64_t*)(ptr + 0x150);
+		sb_icon4_RV = *(uint64_t*)(sb_icon4_RV + 0x68);
+		sb_icon4_RV = *(uint64_t*)(sb_icon4_RV + 0x10);
+		sb_icon4_RV = *(uint64_t*)(sb_icon4_RV + 0x48);
+		sb_icon4_RV = *(uint64_t*)(sb_icon4_RV + 0x10);
+
+
+		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
+		if (ImGui::Button("icon id test"))
+		{
+			printf("%d\n", GetRealIconIDFromRealID(5100));
+			printf("%d\n", GetRealIconIDFromRealID(5200));
+
+		}
+		ImGui::Text("Memory Texture Test");
+		if (inputAddr && ImGui::IsKeyDown(ImGuiKey_LeftAlt))
+		{
+			printf("%llx\n", inputAddr);
+			ID3D11ShaderResourceView* texture = (ID3D11ShaderResourceView*)inputAddr;
+			ImGui::Image((void*)texture, ImVec2(1024 / 4, 2048 / 4));
+		}
+		else {
+			ID3D11ShaderResourceView* texture = (ID3D11ShaderResourceView*)sb_boss_RV;
+			ImGui::Image((void*)texture, ImVec2(2048 / 4, 2048 / 4));
+			//
+			texture = (ID3D11ShaderResourceView*)sb_icon_RV;
+			ImGui::Image((void*)texture, ImVec2(4096 / 4, 2048 / 4));
+			//
+			texture = (ID3D11ShaderResourceView*)sb_icon2_RV;
+			ImGui::Image((void*)texture, ImVec2(252, 252), ImVec2(768.0f/1024.0f, 0.0f), ImVec2(1020.0f/1024.0f, 252.0f/2048.0f));
+			//
+			texture = (ID3D11ShaderResourceView*)sb_icon3_RV;
+			ImGui::Image((void*)texture, ImVec2(4096 / 4, 2048 / 4));
+			//
+			texture = (ID3D11ShaderResourceView*)sb_icon4_RV;
+			ImGui::Image((void*)texture, ImVec2(1024 / 4, 2048 / 4));
+		}
+
+		ImGui::End();
+#endif
 		//TESTING GROUND
 		WeaponWheelSettings();
 
@@ -195,9 +288,18 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 		if (!ImGui::IsAnyItemHovered() && (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_Tab)) || ImGui::IsKeyDown(ImGuiKey_GamepadDpadDown)) && getGameMenuState() == 0 && getOtherMenuStates() == 0)
 		{
+			if (ImGui::IsKeyDown(ImGuiKey_GamepadDpadDown))
+			{
+				usingGamepad2 = true;
+			}
+			else
+			{
+				usingGamepad2 = false;
+			}
 			ImGui::OpenPopup("##piepopup");
 			popupOpen = true;
 			Hooks::setGameMenu(8, 0);
+			analogueTriggerState = 1;
 		}
 		else
 		{
@@ -212,7 +314,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 				}
 			}
-
 		}
 		
 		ImVec2 windowCenter = ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y / 2);
@@ -256,7 +357,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		{
 			for (int i = 0; i <= 9; i++) {
 				
-				if(ImGui::IsKeyPressed(ImGuiKey_0 + i) || ImGui::IsKeyPressed(ImGuiKey_Keypad0 + i)) {
+				if(ImGui::IsKeyPressed(ImGuiKey_0 + i) || ImGui::IsKeyPressed(ImGuiKey_Keypad0 + i)) { 
 
 					int wheelItemIndex = i - 1;
 					if (wheelItemIndex < 0)
@@ -266,6 +367,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 					if (wheelItemIndex < wheelItems.size())
 					{
 						equipSuccess = attemptEquip(wheelItems[wheelItemIndex].realID);
+						start = clock();
 						GUISoundMaker9000(0x29, 0x1F4);
 						if (!equipSuccess)
 						{
@@ -274,16 +376,53 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 						if (wheelItems[wheelItemIndex].realID < 10000)
 						{
-							int artSelectedID = iconIDCalculator(wheelItems[artIndexSelected].realID);
+							int artSelectedID = iconIDCalculator(wheelItems[wheelItemIndex].realID);
 							int tempTestID = getCurrentEquippedIconID(COMBAT_ART_SLOT);
-							if (equipSuccess && artSelectedID != tempTestID)
-							{
+
 								GUISoundMaker9000(0x29, 0x64);
-							}
+							
 						}
 					}
 				}
 			}
+
+			ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus;
+			ImGui::Begin("hotkey image", NULL, flags);
+			ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth(), 0));
+
+			double duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+			if (duration < 1.5)
+			{
+				if (alpha < 1)
+				{
+					alpha += 0.45f;
+
+				}
+			}
+			else {
+				if (alpha > 0)
+				{
+					alpha -= 0.15f;
+				}
+
+			}
+			int realImageID = 0;
+
+			if (alpha > 0)
+			{
+				for (auto it = wheelItems.begin(); it != wheelItems.end(); ++it)
+				{
+					if (iconIDCalculator(it->realID) == getCurrentEquippedIconID(COMBAT_ART_SLOT))
+					{
+						ImageInfoStruct* image = &it->image;
+						ImGui::Image(image->imageptr, ImVec2(image->width * 0.5, image->height * 0.5), image->uv0, image->uv1, ImVec4(1, 1, 1, alpha));
+					}
+				}
+			}
+
+
+			ImGui::End();
+
 		}
 	}
 
@@ -313,22 +452,26 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 bool openConfigurator = false;
 bool configPopupOpen = false;
+std::unordered_map<int, ImageInfoStruct*> reducedImagePool;
+bool poolReduced = false;
 void WeaponWheelSettings() {
 
 	if (getGameMenuState() == 0x2)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
+		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2, 0), NULL, ImVec2(0.5f, 0.0f));
 
 			ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus;
 			//popupOpen = false;
 			ImGui::Begin("This should not be visible", NULL, flags);
-			ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
 
 			if (ImGui::Button("Weapon Wheel Options [select]") || ImGui::IsKeyPressed(ImGuiKey_GamepadBack)) {
 				GUISoundMaker9000(0x29, 0x3E8);
+				ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2, 0), NULL, ImVec2(0.5f, 0.0f));
 				ImGui::OpenPopup("wheel options");
 				configPopupOpen = true;
+
 			}
 			flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove;
 			if (ImGui::BeginPopup("wheel options", flags))
@@ -336,7 +479,6 @@ void WeaponWheelSettings() {
 				const float pixel_ratio = ImGui::GetIO().DisplaySize.y / 900;
 				float image_size_modifier = 0.2 * pixel_ratio;
 				configPopupOpen = true;
-				ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
 				static int wheelSize = wheelItems.size();
 				ImGui::SliderInt("Slot Count", &wheelSize, SLOT_COUNT_MIN, SLOT_COUNT_MAX);
 				if (wheelSize > SLOT_COUNT_MAX)
@@ -347,7 +489,7 @@ void WeaponWheelSettings() {
 				if (wheelDifference > 0)
 				{
 					for (size_t i = 0; i < wheelDifference; i++) {
-						wheelItems.emplace_back("", 5000);
+						wheelItems.emplace_back("", 5000, ImageInfoStruct());
 
 					}
 				}
@@ -360,26 +502,61 @@ void WeaponWheelSettings() {
 
 				for (size_t i = 0; i < wheelItems.size(); i++)
 				{
+					ImGui::PushID(i);
 
-					if (ImGui::Button(("SLOT " + std::to_string(i + 1) + ": " + wheelItems[i].getName()).c_str())) {
-						GUISoundMaker9000(0x29, 0x3E8);
-						ImGui::OpenPopup(("slot_modification_popup" + std::to_string(i + 1)).c_str());
-					}
+					ImGui::Text(("SLOT " + std::to_string(i + 1) + ": " + wheelItems[i].getName()).c_str());
 
-					if (imageMap.find(wheelItems[i].realID) != imageMap.end())
+					ImageInfoStruct* image = getImageFromRealID(wheelItems[i].realID);
+
+					if (wheelItems[i].realID == 5000 || wheelItems[i].realID == 110000)
 					{
-						ImGui::Image(imageMap[wheelItems[i].realID], ImVec2(my_image_width * image_size_modifier, my_image_height * image_size_modifier));
-
+						if (ImGui::ImageButton(0, ImVec2(image->width * image_size_modifier, image->height * image_size_modifier), image->uv0, image->uv1)) {
+							GUISoundMaker9000(0x29, 0x3E8);
+							ImGui::OpenPopup(("slot_modification_popup" + std::to_string(i + 1)).c_str());
+						}
 					}
+					else {
+						if (ImGui::ImageButton(image->imageptr, ImVec2(image->width * image_size_modifier, image->height * image_size_modifier), image->uv0, image->uv1)) {
+							GUISoundMaker9000(0x29, 0x3E8);
+							ImGui::OpenPopup(("slot_modification_popup" + std::to_string(i + 1)).c_str());
+						}
+					}
+
+					
+					ImVec2 baseWinPos = ImGui::GetWindowPos();
+					float baseWinWidth = ImGui::GetWindowWidth();
 					if (ImGui::BeginPopup(("slot_modification_popup" + std::to_string(i + 1)).c_str()))
 					{
+						if (!poolReduced)
+						{
+							for (size_t j = 5000; j < 10000; j++)
+							{
+								if (validateItem(j))
+								{
+									reducedImagePool[j] = getImageFromRealID(j);
+								}
+							}
+							for (size_t j = 70000; j < 100000; j++)
+							{
+								if (validateItem(j))
+								{
+									reducedImagePool[j] = getImageFromRealID(j);
+								}
+							}
+
+							poolReduced = true;
+						}
+
 
 						if (ImGui::Button("Select Combat Art...")) {
 							GUISoundMaker9000(0x29, 0x3E8);
+							ImGui::SetNextWindowPos(ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowWidth(), ImGui::GetWindowPos().y));
 							ImGui::OpenPopup(("combat art popup" + std::to_string(i + 1)).c_str());
 						}
 						if (ImGui::BeginPopup(("combat art popup" + std::to_string(i + 1)).c_str()))
 						{
+							ImGui::Text("Combat Art List");
+
 							for (int j = 5000; j < 10000; j+=100) {
 								int testIconID = iconIDCalculator(j);
 								if (testIconID)
@@ -387,8 +564,24 @@ void WeaponWheelSettings() {
 									std::string selectableStr = getNameFromRealID(j);
 									if (selectableStr != "")
 									{
-										if (ImGui::Selectable(getNameFromRealID(j).c_str()))
-											wheelItems.at(i) = EquipmentStruct("", j);
+										ImGui::Separator();
+
+
+										ImageInfoStruct* image2 = reducedImagePool[j];
+										if (j == 5000 || j == 110000)
+										{
+											ImGui::Image(0, ImVec2(image2->width * image_size_modifier * 0.5, image2->height * image_size_modifier * 0.5), image2->uv0, image2->uv1);
+										}
+										else {
+											ImGui::Image(image2->imageptr, ImVec2(image2->width * image_size_modifier * 0.5, image2->height * image_size_modifier * 0.5), image2->uv0, image2->uv1);
+										}
+										ImGui::SameLine();
+										ImVec2 text_size2 = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, 0.0f, selectableStr.c_str());
+										if (ImGui::Selectable(selectableStr.c_str(), 0.0, NULL, ImVec2(NULL, image2->height * image_size_modifier * 0.5))) {
+											wheelItems.at(i) = EquipmentStruct("", j, *getImageFromRealID(j));
+											GUISoundMaker9000(0x29, 0x3E8);
+										}
+
 									}
 
 								}
@@ -406,11 +599,12 @@ void WeaponWheelSettings() {
 
 						if (ImGui::Button("Select Prosthetic...")) {
 							GUISoundMaker9000(0x29, 0x3E8);
+							ImGui::SetNextWindowPos(ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowWidth(), baseWinPos.y));
 							ImGui::OpenPopup(("prosthetic popup" + std::to_string(i + 1)).c_str());
 						}
 						if (ImGui::BeginPopup(("prosthetic popup" + std::to_string(i + 1)).c_str()))
 						{
-
+							ImGui::Text("Prosthetic List");
 							for (int j = 70000; j < 100000; j += 100) {
 								int testIconID = iconIDCalculator(j);
 								if (testIconID)
@@ -418,8 +612,21 @@ void WeaponWheelSettings() {
 									std::string selectableStr = getNameFromRealID(j);
 									if (selectableStr != "")
 									{
-										if (ImGui::Selectable(getNameFromRealID(j).c_str()))
-											wheelItems.at(i) = EquipmentStruct("", j);
+										ImGui::Separator();
+										ImageInfoStruct* image2 = reducedImagePool[j];
+										if (j == 5000 || j == 110000)
+										{
+											ImGui::Image(0, ImVec2(image2->width * image_size_modifier * 0.5, image2->height * image_size_modifier * 0.5), image2->uv0, image2->uv1);
+										}
+										else {
+											ImGui::Image(image2->imageptr, ImVec2(image2->width * image_size_modifier * 0.5, image2->height * image_size_modifier * 0.5), image2->uv0, image2->uv1);
+										}
+										ImGui::SameLine();
+										ImVec2 text_size2 = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, 0.0f, selectableStr.c_str());
+										if (ImGui::Selectable(selectableStr.c_str(), 0.0, NULL, ImVec2(NULL, image2->height * image_size_modifier * 0.5))) {
+											wheelItems.at(i) = EquipmentStruct("", j, *getImageFromRealID(j));
+											GUISoundMaker9000(0x29, 0x3E8);
+										}
 									}
 
 								}
@@ -432,18 +639,20 @@ void WeaponWheelSettings() {
 					}
 
 					ImGui::Separator();
+					ImGui::PopID();
 
 				}
 
 				if (ImGui::Button("Advanced Settings")) {
 					GUISoundMaker9000(0x29, 0x3E8);
+					ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2, 0), NULL, ImVec2(0.5f, 0.0f));
+
 					ImGui::OpenPopup("Advanced Settings");
 					configPopupOpen = true;
 				}
 
 				if (ImGui::BeginPopup("Advanced Settings", flags))
 				{
-					ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
 					ImGui::Text("Advanced Settings                           ");
 					ImGui::Checkbox("Slow Down Time On Wheel Open", &wantTimeSlow);
 					ImGui::Checkbox("Enable HotKeys", &wantHotKeys);
@@ -496,5 +705,6 @@ void WeaponWheelSettings() {
 	else
 	{
 		openConfigurator = false;
+		poolReduced = false;
 	}
 }

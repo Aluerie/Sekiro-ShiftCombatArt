@@ -9,7 +9,8 @@
 #include <codecvt>
 #include <filesystem>
 #include <unordered_map>
-
+#include "../Graphics/imgui/imgui.h"
+#include <minwinbase.h>
 #define PROSTHETIC_SLOT_1 0
 #define COMBAT_ART_SLOT   1
 #define PROSTHETIC_SLOT_2 2
@@ -19,7 +20,124 @@
 #define PROSTHETIC 1
 
 std::string getNameFromRealID(int realID);
+int GetRealIconIDFromRealID(int realID);
 bool validateItem(int realID);
+
+
+enum ImageSheet{
+    SB_Boss = 0,
+    SB_Icon,
+    SB_Icon_02,
+    SB_Icon_03,
+    SB_Icon_04
+};
+
+struct ImageInfoStruct {
+    int sheet;
+    int realIconID; //too many ID's :(
+    ImVec2 uv0;
+    ImVec2 uv1;
+    float width;
+    float height;
+    void* imageptr;
+    ImageInfoStruct() {
+        sheet = 0;
+        realIconID = 0;
+        imageptr = 0;
+    }
+    ImageInfoStruct(int sheet2, int id2, float x2, float y2, float width2, float height2) {
+        sheet = sheet2;
+        realIconID = id2;
+        width = width2;
+        height = height2;
+        
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        if (sheet == SB_Boss)
+        {
+            maxWidth = 2048;
+            maxHeight = 2048;
+        }
+        else if (sheet == SB_Icon || sheet == SB_Icon_03)
+        {
+            maxWidth = 4096;
+            maxHeight = 2048;
+        }
+        else
+        {
+            maxWidth = 1024;
+            maxHeight = 2048;
+        }
+
+        uv0.x = x2 / maxWidth;
+        uv0.y = y2 / maxHeight;
+
+        uv1.x = (x2 + width) / maxWidth;
+        uv1.y = (y2 + height) / maxHeight;
+
+    }
+
+    bool operator==(const int a) {
+        return (a == realIconID);
+    }
+
+    void SetImagePtr() {
+        uint64_t ptr = *(uint64_t*)(0x143D98F10);
+
+        __try
+        {
+        ptr = *(uint64_t*)(ptr + 0x58);
+        ptr = *(uint64_t*)(ptr + 0xC30);
+        ptr = *(uint64_t*)(ptr + 0x80);
+
+
+        switch (sheet)
+        {
+        case SB_Boss:
+             ptr = *(uint64_t*)(ptr + 0x108);
+            break;
+        case SB_Icon:
+             ptr = *(uint64_t*)(ptr + 0x138);
+            break;
+        case SB_Icon_02:
+             ptr = *(uint64_t*)(ptr + 0x140);
+            break;
+        case SB_Icon_03:
+             ptr = *(uint64_t*)(ptr + 0x148);
+            break;
+        case SB_Icon_04:
+             ptr = *(uint64_t*)(ptr + 0x150);
+            break;
+        default:
+            ptr = *(uint64_t*)(ptr + 0x150);
+            break;
+
+        }
+
+        if (ptr > 0x00007FF400000000 && ptr < 0x00007FF4ffffffff)
+        {                                       
+            ptr = *(uint64_t*)(ptr + 0x68);
+            ptr = *(uint64_t*)(ptr + 0x10);
+            ptr = *(uint64_t*)(ptr + 0x48);
+            ptr = *(uint64_t*)(ptr + 0x10);
+
+            imageptr = (void*)ptr;
+        }
+        else
+        {
+            imageptr = 0;
+        }
+
+        }
+        __except (EXCEPTION_ACCESS_VIOLATION) { imageptr = 0;  }
+
+
+
+    }
+};
+ImageInfoStruct* getImageFromRealID(int realID);
+
 /// <summary>
 /// A struct to marry all the information for prosthetics and
 /// combat arts for easy access. 
@@ -28,18 +146,19 @@ struct EquipmentStruct {
     std::string Name; // Ex: "Whirlwind Slash, Lazulite Axe"
     int realID;     // The ID of the combat art that is consistent between games/saves. 
     int type;   //
-    ID3D11ShaderResourceView* texture = NULL;
+    ImageInfoStruct image;
 
-    EquipmentStruct(std::string iname, int iid) {
+    EquipmentStruct(std::string iname, int iid, ImageInfoStruct iimage) {
         Name = iname;
         realID = iid;
+        image = iimage;
     }
 
     bool operator==(const int a) {
         return (a == realID);
     }
 
-    bool operator==(EquipmentStruct const &a) const {
+    bool operator==(EquipmentStruct const& a) const {
         return a.realID == realID;
     }
 
@@ -49,14 +168,15 @@ struct EquipmentStruct {
 
     }
 };
-
-
 extern bool operator!=(const EquipmentStruct& a, const EquipmentStruct& b);
 
 extern std::vector<EquipmentStruct> CombatArts;
 extern std::vector<EquipmentStruct> Prosthetics;
-extern std::unordered_map<int, ID3D11ShaderResourceView*> imageMap;
+extern std::vector<ImageInfoStruct> imageInfos;
 
+extern bool usingGamepad2;
+extern bool analogueTriggerState;
+extern bool triggerSetting;
 extern bool popupOpen;
 extern bool configPopupOpen;
 extern bool pleaseSwitch;
@@ -90,6 +210,9 @@ extern _GUISoundMaker9000 GUISoundMaker9000;
 
 typedef __int64(__fastcall* __ActionRequest10)(uint64_t a1, char a2, char a3);
 extern __ActionRequest10 requestAction10;
+
+typedef __int64 (__fastcall* __getIDinfo)(__int64 weirdStackShit, int realID);
+extern __getIDinfo getIDinfo;
 
 typedef __int64(__fastcall* __getIconID)(__int64 EquipInventoryDataPtrPlus0x10, unsigned int* realIDptr);
 extern __getIconID getIconID;

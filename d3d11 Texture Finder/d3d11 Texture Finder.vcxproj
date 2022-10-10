@@ -24,6 +24,7 @@
     <ProjectGuid>{d53e392f-ef3a-41de-a841-128d3b8e71c1}</ProjectGuid>
     <RootNamespace>d3d11TextureFinder</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Sekiro Weapon Wheel</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -137,6 +138,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,6 +161,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,8 +175,11 @@
   <ItemGroup>
     <ClInclude Include="Functions\Functions.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
-    <ClInclude Include="framework.h" />
+    <ClInclude Include="framework.h">
+      <FileType>CppHeader</FileType>
+    </ClInclude>
     <ClInclude Include="application.h" />
+    <ClInclude Include="Graphics\ImGuiTheme.h" />
     <ClInclude Include="Graphics\imgui\imconfig.h" />
     <ClInclude Include="Graphics\imgui\imgui.h" />
     <ClInclude Include="Graphics\imgui\imgui_impl_dx11.h" />
@@ -183,6 +189,7 @@
     <ClInclude Include="Graphics\imgui\imstb_textedit.h" />
     <ClInclude Include="Graphics\imgui\imstb_truetype.h" />
     <ClInclude Include="Graphics\stb_image.h" />
+    <ClInclude Include="Functions\IconLayout.h" />
     <ClInclude Include="Hooks\Hooks.h" />
     <ClInclude Include="Graphics\kiero\kiero.h" />
     <ClInclude Include="Graphics\kiero\minhook\include\MinHook.h" />

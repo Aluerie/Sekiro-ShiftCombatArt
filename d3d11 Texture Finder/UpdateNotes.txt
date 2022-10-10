@@ -1,0 +1,6 @@
+Images are now loaded from memory (aka full mod support)
+Configurator UI Enhancements
+Controller input is now passed through to the game (other than selector analog stick)
+Fixed hotkey bug
+
+Todo: Keybindings,hotkey image.

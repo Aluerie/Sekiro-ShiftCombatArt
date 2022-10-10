@@ -95,7 +95,8 @@ int PiePopupSelectMenu(const ImVec2& center, const char* popup_id, std::vector<E
                 draw_list->AddText(text_pos, ImColor(255, 255, 255), item_label);
             }
             else {
-                draw_list->AddImage((void*)imageMap[items[item_n].realID], ImVec2(image_pos.x - image_size_offset, image_pos.y - image_size_offset - image_upshift ), ImVec2(image_pos.x + image_size_offset, image_pos.y + image_size_offset - image_upshift), ImVec2(0, 0), ImVec2(1, 1));
+                ImageInfoStruct* image = &items[item_n].image;
+                draw_list->AddImage(image->imageptr, ImVec2(image_pos.x - image_size_offset, image_pos.y - image_size_offset - image_upshift ), ImVec2(image_pos.x + image_size_offset, image_pos.y + image_size_offset - image_upshift), image->uv0, image->uv1);
 
                 std::istringstream iss(item_label);
                 std::string s;

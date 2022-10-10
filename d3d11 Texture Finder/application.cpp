@@ -7,7 +7,7 @@ CApplicationCore* SekiroApp = nullptr;
 void ApplicationLoader::init() {
 
 	SekiroApp = new CApplicationCore();
-	Sleep(10000);
 	graphicsInit();
+	Sleep(10000);
 	Hooks::createHooks();
 }
