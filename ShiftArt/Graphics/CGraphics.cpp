@@ -142,21 +142,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	float desired_scale = io.DisplaySize.y / (reference_res / reference_scale);
 	font->Scale = desired_scale;
 
-	//ImGui::ShowDemoWindow();
-	//do stuff
-	if (!loadedIn())
-	{
-		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus;
-		ImGui::Begin("Mod Debug", NULL, flags);
-		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x / 2 - ImGui::GetWindowWidth() / 2, 0));
-		ImGui::Text("Weapon Wheel Controls: Dpad-Down + Right Joystick, or Tab + Mouse. This message will disappear once you're loaded in.");
-		ImGui::End();
-		wheelChecked = false;
-
-	}
-
-
-
 	if (loadedIn())
 	{
 
