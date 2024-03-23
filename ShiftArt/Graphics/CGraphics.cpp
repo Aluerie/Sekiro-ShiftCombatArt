@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CGraphics.h"
-#include "PieMenu.h"
 #include <string>
 #include "../Hooks/Hooks.h"
 #include "../Functions/Functions.h"
@@ -79,16 +78,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 			ImGui_ImplWin32_Init(window);
 			ImGui_ImplDX11_Init(pDevice, pContext);
 
-			structInitializer();
-
-			for (auto it = imageMap.begin(); it != imageMap.end(); ++it)
-			{
-				std::string strRealID = std::to_string(it->first);
-				std::string path = "ShiftArtAssets/" + strRealID + ".png";
-				bool ret = LoadTextureFromFile(path.c_str(), &it->second, &my_image_width, &my_image_height);
-				// printf("%llx\n", &(currentArt->texture));
-				IM_ASSERT(ret);
-			}
+			// structInitializer();
 
 			ImFontConfig config;
 			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSans.ttf", 28, NULL, io.Fonts->GetGlyphRangesDefault());

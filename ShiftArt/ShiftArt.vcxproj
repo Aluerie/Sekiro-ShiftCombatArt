@@ -200,7 +200,6 @@
     <ClInclude Include="Graphics\kiero\minhook\src\hde\table32.h" />
     <ClInclude Include="Graphics\kiero\minhook\src\hde\table64.h" />
     <ClInclude Include="Graphics\kiero\minhook\src\trampoline.h" />
-    <ClInclude Include="Graphics\PieMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Functions\Functions.cpp" />
@@ -221,7 +220,6 @@
     <ClCompile Include="Graphics\kiero\minhook\src\hook.c" />
     <ClCompile Include="Graphics\kiero\minhook\src\trampoline.c" />
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="Graphics\PieMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dinput8.def" />
