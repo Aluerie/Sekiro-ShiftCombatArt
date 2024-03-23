@@ -389,7 +389,9 @@ bool attemptEquip(DWORD realID) {
         printf("\tCombatArt Already Equipped\n");
         return true;
     }
-    int force = (realID != 5000);
+
+    int animation5 = *(int *)(actionRequestModule + 0xe4); // BLOCK ANIMATION
+    int force = (realID != 5000) || animation5;
     bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
     return success;
 }

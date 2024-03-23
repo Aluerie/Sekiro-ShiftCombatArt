@@ -54,11 +54,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 	{
 		// DEBUG CONSOLE
 		// UNCOMMENT TO CREATE A CONSOLE WHEN THE GAME STARTS SO WE CAN SEE ALL OUR PRINTF'S THERE.
-		AllocConsole();
-		FILE *fDummy;
-		freopen_s(&fDummy, "CONIN$", "r", stdin);
-		freopen_s(&fDummy, "CONOUT$", "w", stderr);
-		freopen_s(&fDummy, "CONOUT$", "w", stdout);
+		// AllocConsole();
+		// FILE *fDummy;
+		// freopen_s(&fDummy, "CONIN$", "r", stdin);
+		// freopen_s(&fDummy, "CONOUT$", "w", stderr);
+		// freopen_s(&fDummy, "CONOUT$", "w", stdout);
 		// END OF DEBUG CONSOLE
 
 		if (SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void **)&pDevice)))
