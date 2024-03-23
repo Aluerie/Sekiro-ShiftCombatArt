@@ -3,20 +3,20 @@
 * Did you ever press Deflect + Attack buttons together by accident in a game where you constantly spam Deflect and Attack buttons?.. which results in you stupidly standing here slashing Mortal Draw for 2 seconds.
 * Did you ever watch your keyboard logs to find out that that one time you actually didn't fuck it up and you had 0.03 seconds between un-pressing Deflect and pressing Attack down?..
 
-My answer to both of these questions is "Yes". I've done a lot of accidental/unwanted combat arts. This mod tries to provide a solution.
+My answer to both of these questions is **"Yes"**. I've done a lot of accidental/unwanted combat arts. This mod tries to provide a solution to this problem.
 
 ## 🤔 What does this mod actually do?
 
-Quite simple:
+* When you hold `Shift` down - it equips the Mortal Draw;
+* When you let `Shift` up - it unequips the Mortal Draw;
 
-* When you hold Shift down - it equips the Mortal Draw;
-* When you let Shift up - it unequips the Mortal Draw;
+Simply put, now you need to hold `Shift` down to be able to use the Mortal Draw. This way you can never accidentally press it.
 
-Simply put, now you need to hold Shift down to be able to use the Mortal Draw. This way you can never accidentally press it.
+So now you need to press 3 keys combo: Block+Attack while holding Shift down. Bonus trick to reduce to 2 keys: bind your Block keyboard button to Shift in game settings. This way you only need to press Shift+Attack since the game will start blocking for you automatically.
 
-So now you need to press 3 keys combo: Block+Attack while holding Shift down. Bonus trick to reduce this to 2 keys: in-game settings bind your Block keyboard button to Shift: this way you only need to press Shift+Attack since the game will start blocking for you automatically.
+Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw. Video Showcase (notice how combat art's small katana icon in the corner comes/fades away dynamically):
 
-Funnily enough, this way it works in same fashion as Katanas' skill in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like weapon arts where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the weapon art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw.
+<https://github.com/Aluerie/Sekiro-ShiftCombatArt/assets/33165440/a9c09fb1-488a-4c8d-91e0-f62af9a5087f>
 
 ## 🔬 Installation
 
@@ -49,3 +49,4 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 * Allow customizing the keybind
 * Allow customizing the combat art
 * I don't know what happens when you don't have the Mortal Draw available yet.
+* Publish at nexusmods
