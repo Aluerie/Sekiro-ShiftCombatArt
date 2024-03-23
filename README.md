@@ -42,7 +42,7 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 
 ### 🧪 Soon^tm
 
-* Remove all unnecessary references to stuff from the original mod like images, fonts, GUI, Wheel, Wheel settings
+* Remove all unnecessary references to stuff from the original mod like images, fonts, GUI, Wheel, Wheel settings, prosthetic tools
 
 ### 🌈 Dream tier todo list
 
