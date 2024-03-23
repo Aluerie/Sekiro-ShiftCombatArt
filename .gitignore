@@ -341,4 +341,7 @@ healthchecksdb
 
 
 ## My additions
-ShiftArt/Output
+ShiftArt/ForRelease/dinput8.exp
+ShiftArt/ForRelease/dinput8.lib
+*.zip
+.vscode

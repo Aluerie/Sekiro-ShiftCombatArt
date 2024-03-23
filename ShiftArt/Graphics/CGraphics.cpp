@@ -53,6 +53,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 	if (!imguiInit)
 	{
 		// DEBUG CONSOLE
+		// UNCOMMENT TO CREATE A CONSOLE WHEN THE GAME STARTS SO WE CAN SEE ALL OUR PRINTF'S THERE.
 		AllocConsole();
 		FILE *fDummy;
 		freopen_s(&fDummy, "CONIN$", "r", stdin);
@@ -83,22 +84,22 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 			for (auto it = imageMap.begin(); it != imageMap.end(); ++it)
 			{
 				std::string strRealID = std::to_string(it->first);
-				std::string path = "WeaponWheelResources/" + strRealID + ".png";
+				std::string path = "ShiftArtAssets/" + strRealID + ".png";
 				bool ret = LoadTextureFromFile(path.c_str(), &it->second, &my_image_width, &my_image_height);
 				// printf("%llx\n", &(currentArt->texture));
 				IM_ASSERT(ret);
 			}
 
 			ImFontConfig config;
-			font = io.Fonts->AddFontFromFileTTF("WeaponWheelResources/NotoSans.ttf", 28, NULL, io.Fonts->GetGlyphRangesDefault());
+			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSans.ttf", 28, NULL, io.Fonts->GetGlyphRangesDefault());
 			config.MergeMode = true;
-			font = io.Fonts->AddFontFromFileTTF("WeaponWheelResources/NotoSansTC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseFull());
-			font = io.Fonts->AddFontFromFileTTF("WeaponWheelResources/NotoSansSC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			font = io.Fonts->AddFontFromFileTTF("WeaponWheelResources/NotoSansKR-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesKorean());
-			font = io.Fonts->AddFontFromFileTTF("WeaponWheelResources/NotoSansThai-Bold.ttf", 28, &config, io.Fonts->GetGlyphRangesThai());
+			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansTC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseFull());
+			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansSC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansKR-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesKorean());
+			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansThai-Bold.ttf", 28, &config, io.Fonts->GetGlyphRangesThai());
 
 			std::ifstream in;
-			in.open("WeaponWheelResources/wheelItems.txt");
+			in.open("ShiftArtAssets/wheelItems.txt");
 			std::string content;
 
 			while (in >> content)
@@ -111,7 +112,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 			}
 			in.close();
 			std::ifstream in2;
-			in2.open("WeaponWheelResources/settings.txt");
+			in2.open("ShiftArtAssets/settings.txt");
 			in2 >> fileTimeSlow >> fileHotKeys >> fileOperatingMode;
 			in2.close();
 			wantTimeSlow = fileTimeSlow;

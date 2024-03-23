@@ -69,8 +69,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 
 		DisableThreadLibraryCalls(hinstDLL);
 
-
-		in.open("WeaponWheelResources/chainload.txt");
+		in.open("ShiftArtAssets/chainload.txt");
 		in >> content;
 		in.close();
 		LoadLibraryA(content.c_str());

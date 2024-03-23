@@ -174,7 +174,7 @@ void structInitializer() {
     namespace fs = std::filesystem;
 
         fs::path path = fs::current_path();
-        path /= "WeaponWheelResources";
+        path /= "ShiftArtAssets";
         for (const auto& entry : fs::directory_iterator(path)) {
 
             if (entry.path().extension() == ".png")
