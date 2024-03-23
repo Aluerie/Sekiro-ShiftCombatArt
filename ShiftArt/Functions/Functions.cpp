@@ -390,8 +390,9 @@ bool attemptEquip(DWORD realID) {
         return true;
     }
 
-    int animation5 = *(int *)(actionRequestModule + 0xe4); // BLOCK ANIMATION
-    int force = (realID != 5000) || animation5;
+    // int animation5 = *(int *)(actionRequestModule + 0xe4); // idk?
+    int animation4 = *(int *)(actionRequestModule + 0x1B4); // idk?
+    int force = ((realID != 5000) || (animation4 == 1));
     bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
     return success;
 }
