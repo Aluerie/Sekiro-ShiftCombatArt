@@ -66,7 +66,6 @@ extern bool pleaseSwitch;
 extern bool equipSuccess;
 extern int operatingMode;
 // OPTIONS
-extern bool wantTimeSlow;
 
 /// <summary>
 /// Can recreate any sound that's used by the in-game gui.

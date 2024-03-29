@@ -30,7 +30,6 @@ bool graphicsInit()
 
 int artID = 5700;
 
-bool wantTimeSlow;
 bool wantHotKeys;
 int operatingMode;
 #define SLOT_COUNT_MIN 6
@@ -95,7 +94,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 
 	if (loadedIn())
 	{
-		if (ImGui::IsKeyPressed(ImGuiKey_LeftShift, false)) // 5700 - MD; 7300 - EMD
+		if (ImGui::IsKeyPressed(ImGuiKey_LeftShift, false)) // 5700 - MD; 7300 - EMD; for others check original repo :D
 		{
 			equipSuccess = attemptEquip(5700);
 			if (!equipSuccess)
@@ -113,7 +112,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 		}
 		if (!equipSuccess)
 		{
-			printf("ATTEMPTING LAST EQUIP: %d \n", artID);
+			// printf("ATTEMPTING LAST EQUIP: %d \n", artID);
 			equipSuccess = attemptEquip(artID);
 		}
 	}
