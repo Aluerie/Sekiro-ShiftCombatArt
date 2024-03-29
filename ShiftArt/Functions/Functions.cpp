@@ -188,7 +188,7 @@ int tempID = 0;
 int counter;
 bool attemptEquip(DWORD realID)
 {
-    printf("attemptEquip, Beginning: Attempting (%d)\n", realID);
+    // printf("attemptEquip, Beginning: Attempting (%d)\n", realID);
     int iconID = iconIDCalculator(realID);
     int icon[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, iconID};
     uint64_t actionRequestModule = GetActionRequestModule();
@@ -197,21 +197,19 @@ bool attemptEquip(DWORD realID)
 
     if (iconID == getCurrentEquippedIconID())
     {
-        printf("\tCombatArt Already Equipped\n");
+        // printf("\tCombatArt Already Equipped\n");
         return true;
     }
 
-    // int animation5 = *(int *)(actionRequestModule + 0xe4); // idk?
-    // int animation4 = *(int *)(actionRequestModule + 0x1B4); // idk?
+    // comments might be totally wrong
+    // char animation1 = *(int *)(actionRequestModule + 0x248); // is performing air art like Sakura Dance or Shadow Fall.
+    // int animation2 = *(int *)(actionRequestModule + 0xD8);  // idk
+    // char animation3 = *(int *)(actionRequestModule + 0x249); // 01 - standing on earth, 03 - jump, 08 - grapple
+    int animation4 = *(int *)(actionRequestModule + 0x1B4); // 1 when we do combat related action, not really clear tbh
+    int animation5 = *(int *)(actionRequestModule + 0xe4);  // 1 when combat related action, not really clear tbh
+    // int animation6 = *(int *)(actionRequestModule + 0xb8); // adds +10 (so 4th bit in 10001000) when animation flicks to stationary but only once i.e. we jump up, it will turn +10 for a moment when we land. Otherwise not really clear
 
-    char an1 = *(int *)(actionRequestModule + 0x248); // is performing air art like sakura dance or shadow fall.
-    int an2 = *(int *)(actionRequestModule + 0xD8);
-    char an3 = *(int *)(actionRequestModule + 0x249);
-    int an4 = *(int *)(actionRequestModule + 0x1B4);
-    int an5 = *(int *)(actionRequestModule + 0xe4);
-    int an6 = *(int *)(actionRequestModule + 0xb8);
-
-    int force = ((realID != 5000) || ((an4 == 1) && (an5 == 1)));
+    int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1)));
     bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
     return success;
 }

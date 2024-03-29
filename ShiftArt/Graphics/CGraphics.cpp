@@ -88,10 +88,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 	ImGuiIO &io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-	float reference_res = 900;
-	float reference_scale = 0.5;
-	float desired_scale = io.DisplaySize.y / (reference_res / reference_scale);
-
 	if (loadedIn())
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_LeftShift, false)) // 5700 - MD; 7300 - EMD; for others check original repo :D

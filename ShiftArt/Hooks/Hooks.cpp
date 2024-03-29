@@ -56,12 +56,10 @@ namespace Hooks
 		}
 		if (!equipSuccess)
 		{
-
 			if (*(int *)(actionRequestModule + 0x10) && 0x5)
 			{
 				*(int *)(actionRequestModule + 0x10) &= ~0x1;
 			}
-
 			hijackDelay = 3;
 		}
 		else if (equipSuccess && hijackDelay && false)
@@ -84,7 +82,6 @@ namespace Hooks
 	__MenuChecker menCheckOriginal = NULL;
 	bool setInputCapture()
 	{
-
 		ImGuiIO &io = ImGui::GetIO();
 
 		if (io.WantCaptureMouse)
@@ -98,7 +95,6 @@ namespace Hooks
 
 		if (firstFree)
 		{
-
 			firstFree = false;
 		}
 		return menCheckOriginal();

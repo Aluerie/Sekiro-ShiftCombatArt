@@ -21,13 +21,12 @@ Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same 
 ## 🔬 Installation
 
 * Go to Releases tab, grab the archive.
-    * If you want to use the latest version from master branch then go to `ShiftArt/ForRelease` and take all the content.
-    * PS. Yes, currently, I'm super noob and the script won't run without all these images. Idk how to un-spaghetti the code to stop loading them. Any help is appreciated.
+    * If you want to use the latest version from master branch then go to `ShiftArt/ForRelease` and take the `.dll` file.
 * Paste it into the same folder with `sekiro.exe`
-* If you get prompted to replace `dinput8.dll` (because you use Mod Engine or something):
+* If you get prompted to replace `dinput8.dll` (because you use Mod Engine or something) then you need to use chain-loading:
     * Rename `dinput8.dll` to something like `shiftart.dll`
     * Chain load with mod engine - edit `modengine.ini` according to instructions in the comments of that file.
-    * for other `dinput8.dll`-using mods refer to their chain-loading practices.
+    * for other `dinput8.dll`-using mods refer to their chain-loading practice.
 * Ready. Now you can run Sekiro and try out holding shift into pressing Block+Attack buttons.
 
 ## 👐 Credits
@@ -42,14 +41,22 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 
 ### 🧪 Soon^tm
 
-* Remove all unnecessary references to stuff from the original mod like images, fonts, GUI, Wheel, Wheel settings, prosthetic tools
+* Nothing really
 
 ### 🌈 Dream tier todo list
 
-* Allow customizing the keybind
+* Clean code further up - we have a lot of references to functions from WeaponWheel that are not used.
+    * variables like settings
+    * prosthetic switch left-over
+    * wheel slots amount
+    * some gui hooks and rendering
+    * mouse input catching
+    * etc
+* Allow customizing the keybind (including controller users)
 * Allow customizing the combat art
 * I don't know what happens when you don't have the Mortal Draw available yet.
 * Publish at nexusmods
+* Learn C++ and actually improve the code (comment at least)
 
 ### ⚠️ Disclaimer
 
