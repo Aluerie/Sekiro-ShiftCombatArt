@@ -125,16 +125,10 @@ unsigned int iconIDCalculator(u_int realID);
 
 bool attemptEquip(DWORD realID);
 
-int getCurrentEquippedIconID(int slot);
+int getCurrentEquippedIconID();
 
 bool loadedIn();
 
 int getGameMenuState();
 
 int getOtherMenuStates();
-
-int getActiveProstheticSlot();
-
-int prostheticSlotConvert(int slot);
-
-int prostheticSlotConvert2(int selection);

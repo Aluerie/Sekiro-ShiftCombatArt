@@ -40,7 +40,6 @@ bool equipSuccess = true;
 int lastAttemptedEquip = 0;
 int my_image_width = 0;
 int my_image_height = 0;
-ImFont *font;
 std::vector<EquipmentStruct> wheelItems;
 std::vector<EquipmentStruct> fileItems;
 bool wheelChecked = false;
@@ -78,49 +77,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 			ImGui_ImplWin32_Init(window);
 			ImGui_ImplDX11_Init(pDevice, pContext);
 
-			// structInitializer();
-
-			ImFontConfig config;
-			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSans.ttf", 28, NULL, io.Fonts->GetGlyphRangesDefault());
-			config.MergeMode = true;
-			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansTC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseFull());
-			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansSC-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansKR-Bold.otf", 28, &config, io.Fonts->GetGlyphRangesKorean());
-			font = io.Fonts->AddFontFromFileTTF("ShiftArtAssets/NotoSansThai-Bold.ttf", 28, &config, io.Fonts->GetGlyphRangesThai());
-
-			std::ifstream in;
-			in.open("ShiftArtAssets/wheelItems.txt");
-			std::string content;
-
-			while (in >> content)
-			{
-				int fileRealID = stoi(content);
-				if (fileRealID > 0 && fileRealID < 100000)
-				{
-					fileItems.emplace_back("", fileRealID);
-				}
-			}
-			in.close();
-			std::ifstream in2;
-			in2.open("ShiftArtAssets/settings.txt");
-			in2 >> fileTimeSlow >> fileHotKeys >> fileOperatingMode;
-			in2.close();
-			wantTimeSlow = fileTimeSlow;
-			wantHotKeys = fileHotKeys;
-			operatingMode = fileOperatingMode;
-			if (fileItems.size() < SLOT_COUNT_MIN)
-			{
-				for (size_t i = 0; i < SLOT_COUNT_MIN; i++)
-				{
-					wheelItems.emplace_back("", 5000);
-				}
-			}
-			else
-			{
-				for (size_t i = 0; i < fileItems.size(); i++)
-					wheelItems.push_back(fileItems[i]);
-			}
-
 			imguiInit = true;
 		}
 		else
@@ -136,7 +92,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 	float reference_res = 900;
 	float reference_scale = 0.5;
 	float desired_scale = io.DisplaySize.y / (reference_res / reference_scale);
-	font->Scale = desired_scale;
 
 	if (loadedIn())
 	{

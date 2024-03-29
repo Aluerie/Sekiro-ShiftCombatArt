@@ -69,10 +69,11 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 
 		DisableThreadLibraryCalls(hinstDLL);
 
-		in.open("ShiftArtAssets/chainload.txt");
-		in >> content;
-		in.close();
-		LoadLibraryA(content.c_str());
+		// TODO: if we ever develop this mod further then this is where we declare chain-loading
+		// in.open("/shift_art.ini");
+		// in >> content;
+		// in.close();
+		// LoadLibraryA(content.c_str());
 		BeginMod();
 
 		break;
