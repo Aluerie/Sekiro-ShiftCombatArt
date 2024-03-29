@@ -50,3 +50,15 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 * Allow customizing the combat art
 * I don't know what happens when you don't have the Mortal Draw available yet.
 * Publish at nexusmods
+
+### ⚠️ Disclaimer
+
+This disclaimer should probably be mentioned above.
+
+* I tried to fork two similar projects: Weapon Wheel and HotkeySystem. This repo is a fork of Weapon Wheel.
+* Currently, I seem to get better results with this repo (both repos have animation bug but this one meets it less frequently)
+
+The related issues:
+
+* issue for the bug in HotkeySystem Fork Repo: <https://github.com/Aluerie/SekiroHotkeySystem/issues/1>
+* issue for the bug in this repo - <https://github.com/Aluerie/Sekiro-ShiftCombatArt/issues/1>
