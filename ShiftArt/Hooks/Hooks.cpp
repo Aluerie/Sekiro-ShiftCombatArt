@@ -173,11 +173,11 @@ namespace Hooks
 	/// </summary>
 	void createHooks()
 	{
-		MH_CreateHook((LPVOID)menCheck, (LPVOID)&setInputCapture, reinterpret_cast<LPVOID *>(&menCheckOriginal));
-		MH_EnableHook((LPVOID)menCheck);
+		// MH_CreateHook((LPVOID)menCheck, (LPVOID)&setInputCapture, reinterpret_cast<LPVOID *>(&menCheckOriginal));
+		// MH_EnableHook((LPVOID)menCheck);
 
-		MH_CreateHook((LPVOID)timeStepSetter, (LPVOID)&setTimeStep, reinterpret_cast<LPVOID *>(&timeStepSetterOriginal));
-		MH_EnableHook((LPVOID)timeStepSetter);
+		// MH_CreateHook((LPVOID)timeStepSetter, (LPVOID)&setTimeStep, reinterpret_cast<LPVOID *>(&timeStepSetterOriginal));
+		// MH_EnableHook((LPVOID)timeStepSetter);
 
 		MH_CreateHook((LPVOID)checkDuplicate, (LPVOID)&forceNonDuplicate, reinterpret_cast<LPVOID *>(&checkDuplicateOriginal));
 		MH_EnableHook((LPVOID)checkDuplicate);
@@ -185,14 +185,14 @@ namespace Hooks
 		MH_CreateHook((LPVOID)requestAction, (LPVOID)&hijackRequest, reinterpret_cast<LPVOID *>(&requestActionOriginal));
 		MH_EnableHook((LPVOID)requestAction);
 
-		MH_CreateHook((LPVOID)menInputDisable, (LPVOID)&setMenuCapture, reinterpret_cast<LPVOID *>(&menInputDisableOriginal));
-		MH_EnableHook((LPVOID)menInputDisable);
+		// MH_CreateHook((LPVOID)menInputDisable, (LPVOID)&setMenuCapture, reinterpret_cast<LPVOID *>(&menInputDisableOriginal));
+		// MH_EnableHook((LPVOID)menInputDisable);
 
 		MH_CreateHook((LPVOID)GamePadInputParser, (LPVOID)&setGamePadInputCapture, reinterpret_cast<LPVOID *>(&GamePadInputParserOriginal));
 		MH_EnableHook((LPVOID)GamePadInputParser);
 
-		MH_CreateHook((LPVOID)UIMenuSetter, (LPVOID)&setGameMenu, reinterpret_cast<LPVOID *>(&UIMenuSetterOriginal));
-		MH_EnableHook((LPVOID)UIMenuSetter);
+		// MH_CreateHook((LPVOID)UIMenuSetter, (LPVOID)&setGameMenu, reinterpret_cast<LPVOID *>(&UIMenuSetterOriginal));
+		// MH_EnableHook((LPVOID)UIMenuSetter);
 
 		initialized = true;
 	}

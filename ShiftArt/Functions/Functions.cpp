@@ -209,6 +209,8 @@ bool attemptEquip(DWORD realID)
     int animation5 = *(int *)(actionRequestModule + 0xe4);  // 1 when combat related action, not really clear tbh
     // int animation6 = *(int *)(actionRequestModule + 0xb8); // adds +10 (so 4th bit in 10001000) when animation flicks to stationary but only once i.e. we jump up, it will turn +10 for a moment when we land. Otherwise not really clear
 
+    // in theory we just need to restrict forcing combat art swap when we ARE in THE MIDDLE of using one
+    // but i can't find proper memory pointers/values
     int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1)));
     bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
     return success;
