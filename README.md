@@ -1,6 +1,6 @@
 # 💃 Sekiro mod - Rebind Combat Art to Shift modifier
 
-* Did you ever press Deflect + Attack buttons together by accident in a game where you constantly spam Deflect and Attack buttons?.. which results in you stupidly standing here slashing Mortal Draw for 2 seconds.
+* Did you ever press Deflect + Attack buttons together by accident in a game where you constantly spam Deflect and Attack buttons?.. which results in you stupidly standing here slashing Mortal Draw for 2 seconds?
 * Did you ever watch your keyboard logs to find out that that one time you actually didn't fuck it up and you had 0.03 seconds between un-pressing Deflect and pressing Attack down?..
 
 My answer to both of these questions is **"Yes"**. I've done a lot of accidental/unwanted combat arts. This mod tries to provide a solution to this problem.
@@ -10,24 +10,39 @@ My answer to both of these questions is **"Yes"**. I've done a lot of accidental
 * When you hold `Shift` down - it equips the Mortal Draw;
 * When you let `Shift` up - it unequips the Mortal Draw;
 
-Simply put, now you need to hold `Shift` down to be able to use the Mortal Draw. This way you can never accidentally press it.
+> [!WARNING]
+> Currently, only Mortal Draw is supported and there is no choosing menu like in forked mod.
 
-So now you need to press 3 keys combo: Block+Attack while holding Shift down. Bonus trick to reduce to 2 keys: bind your Block keyboard button to Shift in game settings. This way you only need to press Shift+Attack since the game will start blocking for you automatically.
+Simply put, with this mod you need to hold `Shift` down to be able to use the Mortal Draw. This way you can never accidentally press it.
 
-Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw. Video Showcase (notice how combat art's small katana icon in the corner comes/fades away dynamically):
+So now you need to press 3 keys combo: Block+Attack while holding `Shift` down.
+
+> [!NOTE]
+> **Bonus trick** to reduce this to just 2 keys: bind your Block keyboard button to `Shift` in game settings. This way you only need to press `Shift`+Attack since the game is going to start blocking automatically.
+
+Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw.
+
+Video Showcase (notice how combat art's small katana icon in the corner comes/fades away dynamically):
 
 <https://github.com/Aluerie/Sekiro-ShiftCombatArt/assets/33165440/a9c09fb1-488a-4c8d-91e0-f62af9a5087f>
 
 ## 🔬 Installation
 
-* Go to Releases tab, grab the archive.
-    * If you want to use the latest version from master branch then go to `ShiftArt/ForRelease` and take the `.dll` file.
-* Paste it into the same folder with `sekiro.exe`
-* If you get prompted to replace `dinput8.dll` (because you use Mod Engine or something) then you need to use chain-loading:
-    * Rename `dinput8.dll` to something like `shiftart.dll`
-    * Chain load with mod engine - edit `modengine.ini` according to instructions in the comments of that file.
-    * for other `dinput8.dll`-using mods refer to their chain-loading practice.
-* Ready. Now you can run Sekiro and try out holding shift into pressing Block+Attack buttons.
+1. Go to Releases tab, grab the archive.
+    * If you want to use the latest version from master branch then go to `ShiftArt/ForRelease` and take the `.dll` and `ini` files.
+2. Extract the archive, copy `shift_art.dll`, `shift_art.ini` and paste them into the same folder with `sekiro.exe`
+3. Now we need to secure `.dll` file loading. There are two ways about it.
+    1. Chain-loading - load `dll` files in a chain matter. Thus, let some other mod load my `dll`.
+       * Most likely, you already have [Mod Engine](https://www.nexusmods.com/sekiro/mods/6). If not, install it. It's a must have for 95% mods for Sekiro 😀 anyway;
+       * In this case, edit `modengine.ini`: change the line `chainDInput8DLLPath=""` to `chainDInput8DLLPath="\shift_art.dll"`
+       * Now we have a following chain: modengine's `dinput8.dll` ➡️chain-loads `shift_art.dll`
+           * If there is nothing else needed or no problems then you are ready to go ✅.
+       * However, if you already have some other mod here then refer to its instructions about chain-loading and load `shift_art.dll` with it (if it's supported by that other mod).
+    2. Bare `dinput8.dll`
+        * if for some reason my mod is the only mod you ever needed then:
+        * Rename `shift_art.dll` into `dinput8.dll`. Sekiro will automatically load it when launching.
+4. Bonus: if you want to chain-load with my mod then use `shift_art.ini` and put `"chainDllName=othermod.dll"` in here.
+    * Note, that unlike `modengine.ini` - there is no need for `\` before the file name.
 
 ## 👐 Credits
 

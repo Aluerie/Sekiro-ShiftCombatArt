@@ -173,7 +173,7 @@
     <PostBuildEvent>
       <Message>
       </Message>
-      <Command>copy /Y "$(TargetPath)" "D:\CINEMA\Sekiro - Shadows Die Twice\wheel.dll"</Command>
+      <Command>copy /Y "$(TargetPath)" "D:\CINEMA\Sekiro - Shadows Die Twice\shift_art.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

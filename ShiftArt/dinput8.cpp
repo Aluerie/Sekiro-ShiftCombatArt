@@ -3,7 +3,7 @@
 #include <fstream>
 
 HINSTANCE mHinst = 0, mHinstDLL = 0;
-extern "C" UINT_PTR mProcs[6] = { 0 };
+extern "C" UINT_PTR mProcs[6] = {0};
 
 LPCSTR mImportNames[6] = {
 
@@ -20,17 +20,17 @@ void CreateConsole()
 {
 	AllocConsole();
 
-	FILE* fp;
+	FILE *fp;
 
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 	freopen_s(&fp, "CONIN$", "r", stdin);
 
 	SetConsoleTitleA("Sekiro Mod Console");
-
 }
 
 std::thread main_mod_thread;
-void BeginMod() {
+void BeginMod()
+{
 
 	char dllpath[MAX_PATH];
 
@@ -40,7 +40,8 @@ void BeginMod() {
 
 	mHinstDLL = LoadLibrary(dllpath);
 
-	if (!mHinstDLL) {
+	if (!mHinstDLL)
+	{
 		MessageBoxA(NULL, "Failed to load original DLL", "Error", MB_ICONERROR);
 		return;
 	};
@@ -56,18 +57,27 @@ void BeginMod() {
 	return;
 };
 
-
-
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
 
 	std::ifstream in;
 	std::string content;
+
+	// Name of the dll to chain load instead of the original dinput8 one.
+	char dllChainPath[MAX_PATH] = "";
 
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
 
 		DisableThreadLibraryCalls(hinstDLL);
+
+		// Chain-loading
+		GetPrivateProfileString("Misc", "chainDllName", "", dllChainPath, 100, ".\\shift_art.ini");
+		if (dllChainPath)
+		{
+			LoadLibrary(dllChainPath);
+		}
 
 		// TODO: if we ever develop this mod further then this is where we declare chain-loading
 		// in.open("/shift_art.ini");
@@ -86,6 +96,5 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	}
 
 	return TRUE;
-
 }
 extern "C" void _DirectInput8Create();
