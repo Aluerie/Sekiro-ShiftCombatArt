@@ -122,7 +122,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 		}
 		else if (ImGui::IsKeyReleased(ImGuiKey_LeftShift))
 		{
-			latestArtID = 5000;
+			latestArtID = 5000; // Unequip Combat Art
 			equipSuccess = attemptEquip(latestArtID);
 		}
 

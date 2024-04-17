@@ -11,7 +11,7 @@ My answer to both of these questions is **"Yes"**. I've done a lot of accidental
 * When you let `Shift` up - it unequips the Mortal Draw;
 
 > [!WARNING]
-> Currently, only Mortal Draw is supported and there is no choosing menu like in forked mod.
+> Currently, only `Shift` key and Mortal Draw are supported and there is no choosing menu/settings page like in the forked mod.
 
 Simply put, with this mod you need to hold `Shift` down to be able to use the Mortal Draw. This way you can never accidentally press it.
 
