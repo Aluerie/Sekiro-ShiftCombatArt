@@ -75,8 +75,8 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 
 ### ⚠️ Disclaimer
 
-This disclaimer should probably be mentioned above.
-
-* I tried to fork two similar projects: Weapon Wheel and HotkeySystem. This repo is a fork of Weapon Wheel.
+* I tried to fork two similar projects:
+    * Weapon Wheel - current repo.
+    * HotkeySystem - [Aluerie/SekiroHotkeySystem](https://github.com/Aluerie/SekiroHotkeySystem)
 * But both repos have the same annoying animation bug (that will kill you once or twice!).
     * However, it occurs less when using the mod provided with this repo.
