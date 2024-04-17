@@ -29,6 +29,7 @@ bool graphicsInit()
 }
 
 int artID = 5700;
+int latestArtID = 5000;
 
 bool wantHotKeys;
 int operatingMode;
@@ -90,26 +91,45 @@ HRESULT __stdcall hkPresent(IDXGISwapChain *pSwapChain, UINT SyncInterval, UINT 
 
 	if (loadedIn())
 	{
-		if (ImGui::IsKeyPressed(ImGuiKey_LeftShift, false)) // 5700 - MD; 7300 - EMD; for others check original repo :D
+		// choose combat art
+		// For combat arts that aren't listed refer to original repo files :D
+		if (ImGui::IsKeyPressed(ImGuiKey_1, false))
 		{
-			equipSuccess = attemptEquip(5700);
-			if (!equipSuccess)
-			{
-				artID = 5700;
-			}
+			artID = 5700; // Mortal Draw
+		}
+		else if (ImGui::IsKeyPressed(ImGuiKey_2, false))
+		{
+			artID = 5400; // Dragon Flash
+		}
+		else if (ImGui::IsKeyPressed(ImGuiKey_3, false))
+		{
+			artID = 7700; // Sakura Dance
+		}
+		else if (ImGui::IsKeyPressed(ImGuiKey_4, false))
+		{
+			artID = 7100; // Double Ichimonji
+		}
+		else if (ImGui::IsKeyPressed(ImGuiKey_5, false))
+		{
+			artID = 7300; // Empowered Mortal Draw
+		}
+
+		// Shift Key
+		if (ImGui::IsKeyPressed(ImGuiKey_LeftShift, false))
+		{
+			latestArtID = artID;
+			equipSuccess = attemptEquip(latestArtID);
 		}
 		else if (ImGui::IsKeyReleased(ImGuiKey_LeftShift))
 		{
-			equipSuccess = attemptEquip(5000);
-			if (!equipSuccess)
-			{
-				artID = 5000;
-			}
+			latestArtID = 5000;
+			equipSuccess = attemptEquip(latestArtID);
 		}
+
 		if (!equipSuccess)
 		{
 			// printf("ATTEMPTING LAST EQUIP: %d \n", artID);
-			equipSuccess = attemptEquip(artID);
+			equipSuccess = attemptEquip(latestArtID);
 		}
 	}
 
