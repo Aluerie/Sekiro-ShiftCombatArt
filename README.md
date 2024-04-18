@@ -26,22 +26,36 @@ Video Showcase (notice how combat art's small katana icon in the corner comes/fa
 
 <https://github.com/Aluerie/Sekiro-ShiftCombatArt/assets/33165440/a9c09fb1-488a-4c8d-91e0-f62af9a5087f>
 
+## 💳 Master-branch difference
+
+Experimental, but currently master-branch `.dll` file (that you can grab from `ShiftArt/ForRelease`) has an extra feature.
+
+* By default after loading into the game pressing/unpressing `Shift` will equip/unequip Mortal Draw;
+* But you can switch your Combat Art by pressing keys from Number row (the one above QWERTY):
+    * key `1` - Mortal Draw
+    * key `2` - Dragon Flash
+    * key `3` - Sakura Dance
+    * key `4` - Ichimonji Double
+    * key `5` - Empowered Mortal Draw
+* For example, I just used Mortal Draw and want to swap to Sakura Dance, then I just press `3`. Now pressing/unpressing `Shift` will equip/unequip Sakura Dance.
+
 ## 🔬 Installation
 
 1. Go to Releases tab, grab the archive.
-    * If you want to use the latest version from master branch then go to `ShiftArt/ForRelease` and take the `.dll` and `ini` files.
+    * If you want to use the latest version that has differences mentioned "💳 Master-branch difference" section then go to `ShiftArt/ForRelease` and take the `.dll` and `ini` files.
 2. Extract the archive, copy `shift_art.dll`, `shift_art.ini` and paste them into the same folder with `sekiro.exe`
 3. Now we need to secure `.dll` file loading. There are two ways about it.
     1. Chain-loading - load `dll` files in a chain matter. Thus, let some other mod load my `dll`.
-       * Most likely, you already have [Mod Engine](https://www.nexusmods.com/sekiro/mods/6). If not, install it. It's a must have for 95% mods for Sekiro 😀 anyway;
+       * Most likely, you already have [Mod Engine](https://www.nexusmods.com/sekiro/mods/6). If not, install it. It's a must-have for 95% mods anyway;
        * In this case, edit `modengine.ini`: change the line `chainDInput8DLLPath=""` to `chainDInput8DLLPath="\shift_art.dll"`
+       * `\` is important!
        * Now we have a following chain: modengine's `dinput8.dll` ➡️chain-loads `shift_art.dll`
            * If there is nothing else needed or no problems then you are ready to go ✅.
        * However, if you already have some other mod here then refer to its instructions about chain-loading and load `shift_art.dll` with it (if it's supported by that other mod).
     2. Bare `dinput8.dll`
         * if for some reason my mod is the only mod you ever needed then:
         * Rename `shift_art.dll` into `dinput8.dll`. Sekiro will automatically load it when launching.
-4. Bonus: if you want to chain-load with my mod then use `shift_art.ini` and put `"chainDllName=othermod.dll"` in here.
+4. Bonus: if you want to chain-load some other `othermod.dll` with my mod then use `shift_art.ini` and put `"chainDllName=othermod.dll"` in here.
     * Note, that unlike `modengine.ini` - there is no need for `\` before the file name.
 
 ## 👐 Credits
@@ -52,6 +66,14 @@ Also, I'm extremely noob in C++ myself. This mod probably can be done in 100x le
 
 So anyway, if anybody can help - please, I beg you, help me and teach me.
 
+### ⚠️ Disclaimer
+
+* I tried to fork two similar projects:
+    * Weapon Wheel - current repo.
+    * HotkeySystem - [Aluerie/SekiroHotkeySystem](https://github.com/Aluerie/SekiroHotkeySystem)
+* But both repos have the same annoying animation bug (that will kill you once or twice!).
+    * However, it occurs less when using the mod provided with this repo.
+
 ## 🗞️ ToDo
 
 ### 🧪 Soon^tm
@@ -60,23 +82,14 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 
 ### 🌈 Dream tier todo list
 
-* Clean code further up - we have a lot of references to functions from WeaponWheel that are not used.
-    * variables like settings
-    * prosthetic switch left-over
-    * wheel slots amount
-    * some gui hooks and rendering
-    * mouse input catching
-    * etc
-* Allow customizing the keybind (including controller users)
-* Allow customizing the combat art
+ToDo list that I probably should write down in my personal notes than a public readme.
+
+* Clean code further up - we have a lot of references to functions from WeaponWheel that are not used anymore.
+* UI where we:
+    * Allow customizing the keybinds (including controller users)
+    * Allow customizing the combat art(-s)
 * I don't know what happens when you don't have the Mortal Draw available yet.
+    * (?) Looks like the character loses Kusabimaru for a moment, but it's easily fixable in-game;
+    * Can we even look up to which arts the player has access to (I think Reaper's mod does)
 * Publish at nexusmods
 * Learn C++ and actually improve the code (comment at least)
-
-### ⚠️ Disclaimer
-
-* I tried to fork two similar projects:
-    * Weapon Wheel - current repo.
-    * HotkeySystem - [Aluerie/SekiroHotkeySystem](https://github.com/Aluerie/SekiroHotkeySystem)
-* But both repos have the same annoying animation bug (that will kill you once or twice!).
-    * However, it occurs less when using the mod provided with this repo.
