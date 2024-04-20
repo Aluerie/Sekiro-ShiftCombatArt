@@ -127,6 +127,57 @@ uint64_t GetActionRequestModule()
     return ActionRequest;
 }
 
+uint64_t GetCurrentAnimation()
+{
+    uint64_t PlayerInstance = GetPlayerInstancePtr();
+    if (!PlayerInstance)
+        return 0;
+
+    uint64_t CharModules = *(uint64_t *)(PlayerInstance + 0x1ff8);
+    if (!CharModules)
+        return 0;
+
+    uint64_t UnknownModule = *(uint64_t *)(CharModules + 0x10); // unknown for me :c
+    if (!UnknownModule)
+        return 0;
+
+    uint64_t CurrentAnimation = *(uint64_t *)(UnknownModule + 0x20);
+    if (!CurrentAnimation)
+        return 0;
+
+    return CurrentAnimation;
+}
+
+// std::string GetCurrentAnimationName()
+// {
+//     uint64_t PlayerInstance = GetPlayerInstancePtr();
+//     if (!PlayerInstance)
+//         return "0";
+
+//     uint64_t CharModules = *(uint64_t *)(PlayerInstance + 0x1ff8);
+//     if (!CharModules)
+//         return "0";
+
+//     uint64_t CurrentAnimationNameJapanese = *(uint64_t *)(CharModules + 0x28); // unknown for me :c
+//     if (!CurrentAnimationNameJapanese)
+//         return "0";
+
+//     uint64_t txtPtr = *(uint64_t *)(CurrentAnimationNameJapanese + 0x878);
+//     if (txtPtr == 0)
+//     {
+//         return "0";
+//     }
+//     std::wstring string_to_convert = std::wstring((const wchar_t *)txtPtr);
+//     printf("help");
+
+//     if (string_to_convert.empty())
+//         return std::string();
+//     int size_needed = WideCharToMultiByte(CP_UTF8, 0, &string_to_convert[0], (int)string_to_convert.size(), NULL, 0, NULL, NULL);
+//     std::string strTo(size_needed, 0);
+//     WideCharToMultiByte(CP_UTF8, 0, &string_to_convert[0], (int)string_to_convert.size(), &strTo[0], size_needed, NULL, NULL);
+//     return strTo;
+// }
+
 bool loadedIn()
 {
     uint64_t MenuMan = *(uint64_t *)0x143D67408;
@@ -200,6 +251,7 @@ bool attemptEquip(DWORD realID)
         // printf("\tCombatArt Already Equipped\n");
         return true;
     }
+    int animationID = GetCurrentAnimation();
 
     // comments might be totally wrong
     // char animation1 = *(int *)(actionRequestModule + 0x248); // is performing air art like Sakura Dance or Shadow Fall.
@@ -211,7 +263,33 @@ bool attemptEquip(DWORD realID)
 
     // in theory we just need to restrict forcing combat art swap when we ARE in THE MIDDLE of using one
     // but i can't find proper memory pointers/values
-    int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1)));
+
+
+    // idk everything is botched here with Ela table;
+    // these two animations are weird. they are like chain that overtake other fight related animations
+    bool idk = (animationID == 790040);
+    bool idk2 = (animationID == 790010);
+
+    bool isGroundSpecialAttackCombo1 = (animationID == 106316000);
+    bool isGroundSpecialAttackCombo1Re = (animationID == 106316100);
+    bool isGroundSpecialAttackCombo2 = (animationID == 106316010);
+    bool isGroundSpecialAttackCombo2Re = (animationID == 106316110);
+
+    bool isAirSpecialAttack = (animationID == 106316200);
+    bool isLandAirSpecialAttack = (animationID == 106316210);
+
+    // printf("AnimationID: %d\n", animationID); //);
+    int force = ((realID != 5000) ||
+                 (!(idk ||
+                    //    idk2 ||
+                    isGroundSpecialAttackCombo1 ||
+                    isGroundSpecialAttackCombo1Re ||
+                    isGroundSpecialAttackCombo2 ||
+                    isGroundSpecialAttackCombo2Re ||
+                    isAirSpecialAttack ||
+                    isLandAirSpecialAttack) &&
+                  ((animation4 == 1) && (animation5 == 1)))); // without those we can bug the beginning of CombatArt
+    // int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1))); // version1
     bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
     return success;
 }

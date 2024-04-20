@@ -10,6 +10,10 @@ My answer to both of these questions is **"Yes"**. I've done a lot of accidental
 * When you hold `Shift` down - it equips the Mortal Draw;
 * When you let `Shift` up - it unequips the Mortal Draw;
 
+Video Showcase (notice how combat art's small katana icon in the corner comes/fades away dynamically):
+
+<https://github.com/Aluerie/Sekiro-ShiftCombatArt/assets/33165440/a9c09fb1-488a-4c8d-91e0-f62af9a5087f>
+
 > [!WARNING]
 > Currently, only `Shift` key and Mortal Draw are supported and there is no choosing menu/settings page like in the forked mod.
 
@@ -21,10 +25,6 @@ So now you need to press 3 keys combo: Block+Attack while holding `Shift` down.
 > **Bonus trick** to reduce this to just 2 keys: bind your Deflect/Block keyboard button to `Shift` in game settings (you still can have `Right Mouse Click` as your mouse Deflect/Block key). This way you only need to press `Shift`+Attack since the game is going to start blocking automatically.
 
 Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw.
-
-Video Showcase (notice how combat art's small katana icon in the corner comes/fades away dynamically):
-
-<https://github.com/Aluerie/Sekiro-ShiftCombatArt/assets/33165440/a9c09fb1-488a-4c8d-91e0-f62af9a5087f>
 
 ## 💳 Master-branch difference
 
@@ -55,7 +55,7 @@ Experimental, but currently master-branch `.dll` file (that you can grab from `S
     2. Bare `dinput8.dll`
         * if for some reason my mod is the only mod you ever needed then:
         * Rename `shift_art.dll` into `dinput8.dll`. Sekiro will automatically load it when launching.
-4. Bonus: if you want to chain-load some other `othermod.dll` with my mod then use `shift_art.ini` and put `"chainDllName=othermod.dll"` in here.
+4. Bonus: if you want to chain-load some other `other_mod.dll` with my mod then use `shift_art.ini` and put `"chainDllName=other_mod.dll"` in here.
     * Note, that unlike `modengine.ini` - there is no need for `\` before the file name.
 
 ## 👐 Credits
@@ -66,7 +66,7 @@ Also, I'm extremely noob in C++ myself. This mod probably can be done in 100x le
 
 So anyway, if anybody can help - please, I beg you, help me and teach me.
 
-### ⚠️ Disclaimer
+## ⚠️ Disclaimer
 
 * I tried to fork two similar projects:
     * Weapon Wheel - current repo.
@@ -76,7 +76,7 @@ So anyway, if anybody can help - please, I beg you, help me and teach me.
 
 ## 🗞️ ToDo
 
-### 🧪 Soon^tm
+### 🧪 Soon™️
 
 * Nothing really
 
@@ -92,4 +92,4 @@ ToDo list that I probably should write down in my personal notes than a public r
     * (?) Looks like the character loses Kusabimaru for a moment, but it's easily fixable in-game;
     * Can we even look up to which arts the player has access to (I think Reaper's mod does)
 * Publish at nexusmods
-* Learn C++ and actually improve the code (comment at least)
+* Learn C++ and actually improve/rewrite the code
