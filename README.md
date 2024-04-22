@@ -26,6 +26,15 @@ So now you need to press 3 keys combo: Block+Attack while holding `Shift` down.
 
 Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw.
 
+## ⚠️ Disclaimer
+
+* I tried to fork two similar projects:
+    * Weapon Wheel - current repo.
+    * HotkeySystem - [Aluerie/SekiroHotkeySystem](https://github.com/Aluerie/SekiroHotkeySystem)
+* However, both repos have the some annoying bugs.
+    * To be honest, there is less bugs when using the mod provided with this repo (but the code here is also quite messy as well).
+    * Other note, is that even base mods have most of those bugs because it was intended by Fromsoft to be able to swap combat arts on the fly.
+
 ## 💳 Master-branch difference
 
 Experimental, but currently master-branch `.dll` file (that you can grab from `ShiftArt/ForRelease`) has an extra feature.
@@ -64,14 +73,6 @@ As you can notice from forking note, I found that most of needed code-base alrea
 Also, I'm extremely noob in C++ myself. This mod probably can be done in 100x less lines, but I just took tmsrise's mod and edited a few lines for my own desires. So I still have all the code that loads in weapon wheel, it's just not fully used. Sorry about that.
 
 So anyway, if anybody can help - please, I beg you, help me and teach me.
-
-## ⚠️ Disclaimer
-
-* I tried to fork two similar projects:
-    * Weapon Wheel - current repo.
-    * HotkeySystem - [Aluerie/SekiroHotkeySystem](https://github.com/Aluerie/SekiroHotkeySystem)
-* But both repos have the same annoying animation bug (that will kill you once or twice!).
-    * However, it occurs less when using the mod provided with this repo.
 
 ## 🗞️ ToDo
 
