@@ -55,8 +55,7 @@ Experimental, but currently master-branch `.dll` file (that you can grab from `S
     2. Bare `dinput8.dll`
         * if for some reason my mod is the only mod you ever needed then:
         * Rename `shift_art.dll` into `dinput8.dll`. Sekiro will automatically load it when launching.
-4. Bonus: if you want to chain-load some other `other_mod.dll` with my mod then use `shift_art.ini` and put `"chainDllName=other_mod.dll"` in here.
-    * Note, that unlike `modengine.ini` - there is no need for `\` before the file name.
+4. Bonus: if you want to chain-load some other `other_mod.dll` with my mod then use `shift_art.ini` and put `"chainDllName=\other_mod.dll"` in here.
 
 ## 👐 Credits
 

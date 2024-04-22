@@ -251,47 +251,54 @@ bool attemptEquip(DWORD realID)
         // printf("\tCombatArt Already Equipped\n");
         return true;
     }
-    int animationID = GetCurrentAnimation();
+    if (realID != 5000)
+    {
+        // actual equip combat art so force it asap.
+        bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, true);
+        return success;
+    }
+    else
+    {
+        int animationID = GetCurrentAnimation();
 
-    // comments might be totally wrong
-    // char animation1 = *(int *)(actionRequestModule + 0x248); // is performing air art like Sakura Dance or Shadow Fall.
-    // int animation2 = *(int *)(actionRequestModule + 0xD8);  // idk
-    // char animation3 = *(int *)(actionRequestModule + 0x249); // 01 - standing on earth, 03 - jump, 08 - grapple
-    int animation4 = *(int *)(actionRequestModule + 0x1B4); // 1 when we do combat related action, not really clear tbh
-    int animation5 = *(int *)(actionRequestModule + 0xe4);  // 1 when combat related action, not really clear tbh
-    // int animation6 = *(int *)(actionRequestModule + 0xb8); // adds +10 (so 4th bit in 10001000) when animation flicks to stationary but only once i.e. we jump up, it will turn +10 for a moment when we land. Otherwise not really clear
+        // comments might be totally wrong
+        // char animation1 = *(int *)(actionRequestModule + 0x248); // is performing air art like Sakura Dance or Shadow Fall.
+        // int animation2 = *(int *)(actionRequestModule + 0xD8);  // idk
+        // char animation3 = *(int *)(actionRequestModule + 0x249); // 01 - standing on earth, 03 - jump, 08 - grapple
+        int animation4 = *(int *)(actionRequestModule + 0x1B4); // 1 when we do combat related action, not really clear tbh
+        int animation5 = *(int *)(actionRequestModule + 0xe4);  // 1 when combat related action, not really clear tbh
+        // int animation6 = *(int *)(actionRequestModule + 0xb8); // adds +10 (so 4th bit in 10001000) when animation flicks to stationary but only once i.e. we jump up, it will turn +10 for a moment when we land. Otherwise not really clear
 
-    // in theory we just need to restrict forcing combat art swap when we ARE in THE MIDDLE of using one
-    // but i can't find proper memory pointers/values
+        // in theory we just need to restrict forcing combat art swap when we ARE in THE MIDDLE of using one
+        // but i can't find proper memory pointers/values
 
+        // idk everything is botched here with Ela table;
+        // these two animations are weird. they are like chain that overtake other fight related animations
+        bool idk = (animationID == 790040);
+        bool idk2 = (animationID == 790010);
 
-    // idk everything is botched here with Ela table;
-    // these two animations are weird. they are like chain that overtake other fight related animations
-    bool idk = (animationID == 790040);
-    bool idk2 = (animationID == 790010);
+        bool isGroundSpecialAttackCombo1 = (animationID == 106316000);
+        bool isGroundSpecialAttackCombo1Re = (animationID == 106316100);
+        bool isGroundSpecialAttackCombo2 = (animationID == 106316010);
+        bool isGroundSpecialAttackCombo2Re = (animationID == 106316110);
 
-    bool isGroundSpecialAttackCombo1 = (animationID == 106316000);
-    bool isGroundSpecialAttackCombo1Re = (animationID == 106316100);
-    bool isGroundSpecialAttackCombo2 = (animationID == 106316010);
-    bool isGroundSpecialAttackCombo2Re = (animationID == 106316110);
+        bool isAirSpecialAttack = (animationID == 106316200);
+        bool isLandAirSpecialAttack = (animationID == 106316210);
 
-    bool isAirSpecialAttack = (animationID == 106316200);
-    bool isLandAirSpecialAttack = (animationID == 106316210);
-
-    // printf("AnimationID: %d\n", animationID); //);
-    int force = ((realID != 5000) ||
-                 (!(idk ||
-                    //    idk2 ||
-                    isGroundSpecialAttackCombo1 ||
-                    isGroundSpecialAttackCombo1Re ||
-                    isGroundSpecialAttackCombo2 ||
-                    isGroundSpecialAttackCombo2Re ||
-                    isAirSpecialAttack ||
-                    isLandAirSpecialAttack) &&
-                  ((animation4 == 1) && (animation5 == 1)))); // without those we can bug the beginning of CombatArt
-    // int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1))); // version1
-    bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
-    return success;
+        // printf("AnimationID: %d\n", animationID); //);
+        bool isBadAnimation = (idk ||
+                               //    idk2 ||
+                               isGroundSpecialAttackCombo1 ||
+                               isGroundSpecialAttackCombo1Re ||
+                               isGroundSpecialAttackCombo2 ||
+                               isGroundSpecialAttackCombo2Re ||
+                               isAirSpecialAttack ||
+                               isLandAirSpecialAttack); // don't force during bad animation;
+        int force = ((!isBadAnimation) && (animation4 == 1) && (animation5 == 1)); // without those we can bug the beginning of CombatArt
+        // int force = ((realID != 5000) || ((animation4 == 1) && (animation5 == 1))); // version1
+        bool success = EquipItem(COMBAT_ART_SLOT, (__int64)&icon, force);
+        return success;
+    }
 }
 
 int getCurrentEquippedIconID()
