@@ -24,8 +24,6 @@ So now you need to press 3 keys combo: Block+Attack while holding `Shift` down.
 > [!NOTE]
 > **Bonus trick** to reduce this to just 2 keys: bind your Deflect/Block keyboard button to `Shift` in game settings (you still can have `Right Mouse Click` as your mouse Deflect/Block key). This way you only need to press `Shift`+Attack since the game is going to start blocking automatically.
 
-Funnily enough, with bonus trick the mod makes Sekiro *combat art* work in same fashion as Katanas' *weapon art* in Elden Ring/Dark Souls 3. I mean "Unsheathe"-like skills where you hold your skill button (and character takes ready-stance) into pressing light attack that releases the art like Moonveil/Frayed Blade/Uchigatana/etc. With my keybinds Wolf first goes into blocking stance (the ready-stance) and then we press light attack to release the Mortal Draw.
-
 ## ⚠️ Disclaimer
 
 * I tried to fork two similar projects:
