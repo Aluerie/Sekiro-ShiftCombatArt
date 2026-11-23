@@ -1,3 +1,9 @@
+# 💼 ARCHIVE NOTE
+
+Use https://github.com/Aluerie/SekiroDrawnArts
+
+---
+
 # 💃 Sekiro mod - Rebind Combat Art to Shift modifier
 
 * Did you ever press Deflect + Attack buttons together by accident in a game where you constantly spam Deflect and Attack buttons?.. which results in you stupidly standing here slashing Mortal Draw for 2 seconds?
@@ -67,27 +73,3 @@ Experimental, but currently master-branch `.dll` file (that you can grab from `S
 ## 👐 Credits
 
 As you can notice from forking note, I found that most of needed code-base already exists in other mod: [tmsrise/Sekiro-Weapon-Wheel](https://github.com/tmsrise/Sekiro-Weapon-Wheel) so all credits to them.
-
-Also, I'm extremely noob in C++ myself. This mod probably can be done in 100x less lines, but I just took tmsrise's mod and edited a few lines for my own desires. So I still have all the code that loads in weapon wheel, it's just not fully used. Sorry about that.
-
-So anyway, if anybody can help - please, I beg you, help me and teach me.
-
-## 🗞️ ToDo
-
-### 🧪 Soon™️
-
-* Nothing really
-
-### 🌈 Dream tier todo list
-
-ToDo list that I probably should write down in my personal notes than a public readme.
-
-* Clean code further up - we have a lot of references to functions from WeaponWheel that are not used anymore.
-* UI where we:
-    * Allow customizing the keybinds (including controller users)
-    * Allow customizing the combat art(-s)
-* I don't know what happens when you don't have the Mortal Draw available yet.
-    * (?) Looks like the character loses Kusabimaru for a moment, but it's easily fixable in-game;
-    * Can we even look up to which arts the player has access to (I think Reaper's mod does)
-* Publish at nexusmods
-* Learn C++ and actually improve/rewrite the code
